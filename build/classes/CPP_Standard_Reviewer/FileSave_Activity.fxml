@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPP_Standard_Reviewer.FileSave_ActivityController">
+     <children>
+        <Label alignment="TOP_CENTER" layoutX="69.0" layoutY="34.0" prefHeight="17.0" prefWidth="462.0">C++ Standard Reviewer</Label>
+        <SplitPane id="Criteria_Panel" dividerPositions="0.32158590308370044" layoutX="72.0" layoutY="61.0" prefHeight="217.0" prefWidth="456.0">
+          <items>
+            <AnchorPane id="FileName_Save" minHeight="0.0" minWidth="0.0" prefHeight="193.0" prefWidth="196.0">
+               <children>
+                  <TitledPane prefHeight="25.0" prefWidth="224.0" text="File Name" />
+               </children></AnchorPane>
+            <AnchorPane id="Path_Save" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <TitledPane animated="false" prefHeight="25.0" prefWidth="305.0" text="Path">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </TitledPane>
+               </children></AnchorPane>
+          </items>
+        </SplitPane>
+      <Button id="Report_Button" layoutX="469.0" layoutY="340.0" mnemonicParsing="false" text="Generate Report" onAction="#Report"/>
+      <Button id="Browse_PathFile" layoutX="248.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Browse" />
+      <Button id="Back_pathFile" layoutX="52.0" layoutY="340.0" mnemonicParsing="false" onAction="#Back" text="Back" />
+   </children>
+</AnchorPane>

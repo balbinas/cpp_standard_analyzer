@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="Title" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPP_Standard_Reviewer.FXMLDocumentController">
+    <children>
+        <Label alignment="TOP_CENTER" layoutX="69.0" layoutY="34.0" prefHeight="17.0" prefWidth="462.0">C++ Standard Reviewer</Label>
+        <Button id="Add_File" fx:id="button" layoutX="340.0" layoutY="272.0" onAction="#handleButtonAction" text="Add File" />
+      <ScrollPane id="Panel" layoutX="69.0" layoutY="69.0" prefHeight="182.0" prefWidth="462.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+        </content>
+      </ScrollPane>
+      <Button id="Delete_File" layoutX="199.0" layoutY="272.0" mnemonicParsing="false" text="Delete" />
+      <Button id="Next_Button" layoutX="516.0" layoutY="337.0" mnemonicParsing="false" text="Next" onAction="#Next" />
+    </children>
+</AnchorPane>
