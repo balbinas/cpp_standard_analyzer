@@ -58,7 +58,7 @@ public class FileSave_ActivityController implements Initializable {
         lvContent.setItems(obList);
         VBox vbContent = new VBox();
         vbContent.getChildren().addAll(lvContent);
-        VBox.setVgrow(lvContent, Priority.ALWAYS);
+        //VBox.setVgrow(lvContent, Priority.ALWAYS);
         vbContent.setPrefWidth(spAux.getWidth());
         spAux.getChildren().add(vbContent);
     }
