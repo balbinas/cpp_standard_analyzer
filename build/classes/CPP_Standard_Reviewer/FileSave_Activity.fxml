@@ -26,7 +26,7 @@
           </items>
         </SplitPane>
       <Button id="Report_Button" layoutX="469.0" layoutY="340.0" mnemonicParsing="false" text="Generate Report" onAction="#Report"/>
-      <Button id="Browse_PathFile" layoutX="248.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Browse" />
+      <Button id="Browse_PathFile" layoutX="248.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Browse" onAction="#browseFolder" />
       <Button id="Back_pathFile" layoutX="52.0" layoutY="340.0" mnemonicParsing="false" onAction="#Back" text="Back" />
    </children>
 </AnchorPane>

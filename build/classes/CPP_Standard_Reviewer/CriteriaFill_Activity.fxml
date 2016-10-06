@@ -82,12 +82,12 @@
                         <Font size="9.0" />
                      </font>
                   </TextField>
-                  <TextField id="Comments_Criteria" layoutX="38.0" layoutY="295.0" prefHeight="17.0" prefWidth="149.0">
+                  <TextField id="Instructions_Criteria" layoutX="38.0" layoutY="295.0" prefHeight="17.0" prefWidth="149.0">
                      <font>
                         <Font size="9.0" />
                      </font>
                   </TextField>
-                  <TextField id="Comments_Criteria" layoutX="38.0" layoutY="321.0" prefHeight="17.0" prefWidth="149.0">
+                  <TextField id="Blank_Criteria" layoutX="38.0" layoutY="321.0" prefHeight="17.0" prefWidth="149.0">
                      <font>
                         <Font size="9.0" />
                      </font>

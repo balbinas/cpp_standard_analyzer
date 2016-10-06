@@ -14,7 +14,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -29,17 +31,69 @@ public class CriteriaFill_ActivityController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }  
+    }
+    
+    private Stage getStage(ActionEvent event) {
+        Button btnButton = (Button) event.getSource();
+        Stage stStage = (Stage) btnButton.getScene().getWindow();
+        return stStage;
+    }
+    
+    private int toInt(String sAux) {
+        try {
+            int iAux = Integer.parseInt(sAux);
+            return iAux;
+        }catch(Exception ex) {
+            return 0;
+        }
+    }
+    
+    private Boolean validateFields(ActionEvent event) {
+        Stage stStage = getStage(event);
+        TextField tfCampo = (TextField) stStage.getScene().lookup("#FileName_Criteria");
+        int iFName = toInt(tfCampo.getText());
+        tfCampo = (TextField) stStage.getScene().lookup("#Variable_Criteria");
+        int iVariable = toInt(tfCampo.getText());
+        tfCampo = (TextField) stStage.getScene().lookup("#Constant_Criteria");
+        int iConstant = toInt(tfCampo.getText());
+        tfCampo = (TextField) stStage.getScene().lookup("#Program_Criteria");
+        int iProgram = toInt(tfCampo.getText());
+        tfCampo = (TextField) stStage.getScene().lookup("#I_Comments_Criteria");
+        int iIComments = toInt(tfCampo.getText());
+        tfCampo = (TextField) stStage.getScene().lookup("#Library_Criteria");
+        int iLibrary = toInt(tfCampo.getText());
+        tfCampo = (TextField) stStage.getScene().lookup("#C_Functions_Criteria");
+        int iCFun = toInt(tfCampo.getText());
+        tfCampo = (TextField) stStage.getScene().lookup("#F_Header_Criteria");
+        int iFHeader = toInt(tfCampo.getText());
+        tfCampo = (TextField) stStage.getScene().lookup("#Indentation_Criteria");
+        int iIndentation = toInt(tfCampo.getText());
+        tfCampo = (TextField) stStage.getScene().lookup("#Comments_Criteria");
+        int iComments = toInt(tfCampo.getText());
+        tfCampo = (TextField) stStage.getScene().lookup("#Instructions_Criteria");
+        int iInstructions = toInt(tfCampo.getText());
+        tfCampo = (TextField) stStage.getScene().lookup("#Blank_Criteria");
+        int iBlank = toInt(tfCampo.getText());
+        return(100 == (iFName + iVariable + iConstant + iProgram + iIComments
+                + iLibrary + iCFun + iFHeader + iIndentation + iComments 
+                + iInstructions + iBlank));
+    }
     
     @FXML
     public void Next(ActionEvent event) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FileSave_Activity.fxml"));
-        Scene scene = new Scene(root);
-        Button btnNext = (Button) event.getSource();
-        Stage stage = (Stage) btnNext.getScene().getWindow();
+        if(validateFields(event)) {
+            Parent root = FXMLLoader.load(getClass().getResource("FileSave_Activity.fxml"));
+            Scene scene = new Scene(root);
+            Button btnNext = (Button) event.getSource();
+            Stage stage = (Stage) btnNext.getScene().getWindow();
+
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                    "Los criterios de los campos no suman 100 puntos.");
+        }
         
-        stage.setScene(scene);
-        stage.show();
     }
     
     @FXML
