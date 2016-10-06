@@ -115,7 +115,7 @@ public class FXMLDocumentController implements Initializable {
             stStage.show();
         } else {
             JOptionPane.showMessageDialog(null, 
-                    "No haz seleccionado archivos...");
+                    "The are no files selected...");
         }
         
     }

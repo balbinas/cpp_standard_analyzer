@@ -87,7 +87,7 @@ public class FileSave_ActivityController implements Initializable {
             stage.show();
         } else {
             JOptionPane.showMessageDialog(null, 
-                    "No haz seleccionado el destino del archivo");
+                    "There are no file path and name selected.");
         }
         
     }

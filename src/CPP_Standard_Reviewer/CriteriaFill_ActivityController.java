@@ -91,7 +91,7 @@ public class CriteriaFill_ActivityController implements Initializable {
             stage.show();
         } else {
             JOptionPane.showMessageDialog(null, 
-                    "Los criterios de los campos no suman 100 puntos.");
+                    "The amount of the fields do not sum a total of 100 points.");
         }
         
     }
