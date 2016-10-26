@@ -5,7 +5,9 @@
  */
 package CPP_Standard_Reviewer;
 
+import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +27,7 @@ import javax.swing.JOptionPane;
  */
 //&p-CriteriaFill
 public class CriteriaFill_ActivityController implements Initializable {
-
+    public static ArrayList<File> fList;
     /**
      * Initializes the controller class.
      */
@@ -33,6 +35,11 @@ public class CriteriaFill_ActivityController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        //fList = FXMLDocumentController.getFiles();
+        fList = FXMLDocumentController.fList;
+        for (int i = 0; i < fList.size(); i++) {
+            System.out.println(fList.get(i).getName());
+        }
     }
     //&i
     private Stage getStage(ActionEvent event) {

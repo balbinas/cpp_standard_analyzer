@@ -34,7 +34,7 @@ import javax.swing.JOptionPane;
  */
 //&p-SelectFiles
 public class FXMLDocumentController implements Initializable {
-    public ArrayList<File> fList = new ArrayList<File>();
+    public static ArrayList<File> fList = new ArrayList<File>();
     
     @FXML
     private Label lLabel;
@@ -128,7 +128,6 @@ public class FXMLDocumentController implements Initializable {
             Scene scene = new Scene(pRoot);
             Button btnNext = (Button) event.getSource();
             Stage stStage = (Stage) btnNext.getScene().getWindow();
-
             stStage.setScene(scene);
             stStage.show();
         } else {
@@ -137,5 +136,5 @@ public class FXMLDocumentController implements Initializable {
         }
         
     }
-    
+       
 }
