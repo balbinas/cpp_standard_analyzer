@@ -19,9 +19,10 @@ import javafx.stage.Stage;
  *
  * @author Faintinger
  */
+//&p-Cpp_Standard_Reviewer
 public class CPP_Standard_Reviewer extends Application {
     
-    
+    //&i
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
@@ -37,6 +38,7 @@ public class CPP_Standard_Reviewer extends Application {
     /**
      * @param args the command line arguments
      */
+    //&i
     public static void main(String[] args) {
         launch(args);
     }

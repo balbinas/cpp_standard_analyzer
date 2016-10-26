@@ -23,22 +23,24 @@ import javax.swing.JOptionPane;
  *
  * @author Faintinger
  */
+//&p-CriteriaFill
 public class CriteriaFill_ActivityController implements Initializable {
 
     /**
      * Initializes the controller class.
      */
+    //&i
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-    
+    //&i
     private Stage getStage(ActionEvent event) {
         Button btnButton = (Button) event.getSource();
         Stage stStage = (Stage) btnButton.getScene().getWindow();
         return stStage;
     }
-    
+    //&i
     private int toInt(String sAux) {
         try {
             int iAux = Integer.parseInt(sAux);
@@ -47,7 +49,7 @@ public class CriteriaFill_ActivityController implements Initializable {
             return 0;
         }
     }
-    
+    //&i
     private Boolean validateFields(ActionEvent event) {
         Stage stStage = getStage(event);
         TextField tfCampo = (TextField) stStage.getScene().lookup("#FileName_Criteria");
@@ -78,7 +80,7 @@ public class CriteriaFill_ActivityController implements Initializable {
                 + iLibrary + iCFun + iFHeader + iIndentation + iComments 
                 + iInstructions + iBlank));
     }
-    
+    //&i
     @FXML
     public void Next(ActionEvent event) throws Exception {
         if(validateFields(event)) {
@@ -95,7 +97,7 @@ public class CriteriaFill_ActivityController implements Initializable {
         }
         
     }
-    
+    //&i
     @FXML
     public void Back(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));

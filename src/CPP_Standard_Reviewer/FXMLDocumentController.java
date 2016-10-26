@@ -32,19 +32,36 @@ import javax.swing.JOptionPane;
  *
  * @author Faintinger
  */
-
+//&p-SelectFiles
 public class FXMLDocumentController implements Initializable {
     public ArrayList<File> fList = new ArrayList<File>();
     
     @FXML
     private Label lLabel;
     
+    //&i
+    private void removeNotCPPFiles() {
+        ArrayList<File> sFileNames = new ArrayList<File>();
+        String sFiles = "";
+        for (int i = 0; i < fList.size(); i++) {
+            if(fList.get(i).getName().indexOf("cpp") < 0) {
+                sFiles += fList.get(i).getName() + "\n";
+            } else {
+                sFileNames.add(fList.get(i));
+            }
+        }
+        fList = sFileNames;
+        if(!sFiles.equals(""))
+             JOptionPane.showMessageDialog(null, sFiles + "Are no cpp files");
+    }
+    
+    //&i
     private Stage getStage(ActionEvent event) {
         Button btnButton = (Button) event.getSource();
         Stage stStage = (Stage) btnButton.getScene().getWindow();
         return stStage;
     }
-    
+    //&i
     private void setPanel(Stage stStage){
         ScrollPane spAux = (ScrollPane) stStage.getScene().lookup("#Panel");
         ListView<String> lvContent = new ListView();
@@ -59,13 +76,13 @@ public class FXMLDocumentController implements Initializable {
         vbContent.setPrefWidth(spAux.getWidth());
         spAux.setContent(vbContent);
     }
-    
+    //&i
     @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
         lLabel.setText("Hello World!");
     }
-    
+    //&i
     @FXML
     private void deleteSelectFile(ActionEvent event) {
         Stage stStage = getStage(event);
@@ -85,7 +102,7 @@ public class FXMLDocumentController implements Initializable {
             setPanel(stStage);
         } 
     }
-    
+    //&i
     @FXML
     private void fileChoose(ActionEvent event) {
         /*
@@ -95,14 +112,15 @@ public class FXMLDocumentController implements Initializable {
         Stage stStage = getStage(event);
         FileChooser fcFileChooser = new FileChooser();
         fList = new ArrayList<File>(fcFileChooser.showOpenMultipleDialog(stStage));
+        removeNotCPPFiles();
         setPanel(stStage);
     }
-    
+    //&i
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }  
-    
+    //&i
     @FXML
     public void nextScene(ActionEvent event) throws Exception {
         if(fList.size() > 0) {

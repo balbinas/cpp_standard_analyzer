@@ -21,16 +21,18 @@ import javafx.stage.Stage;
  *
  * @author Faintinger
  */
+//&p-ResultActivity
 public class Results_ActivityController implements Initializable {
 
     /**
      * Initializes the controller class.
      */
+    //&i
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }  
-    
+    //&i
     @FXML
     public void NewFile(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
@@ -41,7 +43,7 @@ public class Results_ActivityController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-    
+    //&i
     @FXML
     public void Exit(ActionEvent event) throws Exception {
         Button btnNext = (Button) event.getSource();

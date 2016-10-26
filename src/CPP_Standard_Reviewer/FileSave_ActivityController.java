@@ -32,23 +32,25 @@ import javax.swing.JOptionPane;
  *
  * @author Faintinger
  */
+//&p-FileSave
 public class FileSave_ActivityController implements Initializable {
 
     /**
      * Initializes the controller class.
      */
     File fArchivo = null;
+    //&i
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-    
+    //&i
     private Stage getStage(ActionEvent event) {
         Button btnButton = (Button) event.getSource();
         Stage stStage = (Stage) btnButton.getScene().getWindow();
         return stStage;
     }
-    
+    //&i
     private void setPanel(Stage stStage, String sPanel, String sDirOrName){
         AnchorPane spAux = (AnchorPane) stStage.getScene().lookup("#" + sPanel);
         ListView<String> lvContent = new ListView();
@@ -62,7 +64,7 @@ public class FileSave_ActivityController implements Initializable {
         vbContent.setPrefWidth(spAux.getWidth());
         spAux.getChildren().add(vbContent);
     }
-    
+    //&i
     @FXML
     public void browseFolder(ActionEvent event) {
         Stage stStage = getStage(event);
@@ -73,7 +75,7 @@ public class FileSave_ActivityController implements Initializable {
         setPanel(stStage, "Path_Save", fArchivo.getPath());
         setPanel(stStage, "FileName_Save", fArchivo.getName());
     }
-    
+    //&i
     @FXML
     public void Report(ActionEvent event) throws Exception {
         if(fArchivo != null) {
@@ -91,7 +93,7 @@ public class FileSave_ActivityController implements Initializable {
         }
         
     }
-    
+    //&i
     @FXML
     public void Back(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("CriteriaFill_Activity.fxml"));
