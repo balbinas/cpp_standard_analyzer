@@ -5,6 +5,7 @@
  */
 package CPP_Standard_Reviewer;
 
+import static CPP_Standard_Reviewer.FileSave_ActivityController.fList;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import javax.swing.JOptionPane;
  */
 //&p-CriteriaFill
 public class CriteriaFill_ActivityController implements Initializable {
+    public static int iArrCriteria [];
     public static ArrayList<File> fList;
     /**
      * Initializes the controller class.
@@ -35,11 +37,10 @@ public class CriteriaFill_ActivityController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        //fList = FXMLDocumentController.getFiles();
         fList = FXMLDocumentController.fList;
-        for (int i = 0; i < fList.size(); i++) {
-            System.out.println(fList.get(i).getName());
-        }
+        //for (int i = 0; i < fList.size(); i++) {
+        //    System.out.println(fList.get(i).getName());
+        //}
     }
     //&i
     private Stage getStage(ActionEvent event) {
@@ -83,6 +84,10 @@ public class CriteriaFill_ActivityController implements Initializable {
         int iInstructions = toInt(tfCampo.getText());
         tfCampo = (TextField) stStage.getScene().lookup("#Blank_Criteria");
         int iBlank = toInt(tfCampo.getText());
+        int iArr[] = {iFName, iVariable, iConstant, iProgram, iIComments
+                , iLibrary, iCFun, iFHeader, iIndentation, iComments 
+                , iInstructions, iBlank};
+        iArrCriteria = iArr;
         return(100 == (iFName + iVariable + iConstant + iProgram + iIComments
                 + iLibrary + iCFun + iFHeader + iIndentation + iComments 
                 + iInstructions + iBlank));

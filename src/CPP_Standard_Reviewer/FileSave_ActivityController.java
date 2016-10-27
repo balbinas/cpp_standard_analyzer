@@ -5,6 +5,7 @@
  */
 package CPP_Standard_Reviewer;
 
+import static CPP_Standard_Reviewer.CriteriaFill_ActivityController.fList;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ import javax.swing.JOptionPane;
  */
 //&p-FileSave
 public class FileSave_ActivityController implements Initializable {
-
+    public static ArrayList<File> fList;
+    public static int iArr[];
     /**
      * Initializes the controller class.
      */
@@ -43,6 +45,15 @@ public class FileSave_ActivityController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        fList = FXMLDocumentController.fList;
+        for (int i = 0; i < fList.size(); i++) {
+            System.out.println(fList.get(i).getName());
+        }
+        iArr = CriteriaFill_ActivityController.iArrCriteria;
+        for (int i = 0; i < iArr.length; i++) {
+            System.out.print(iArr[i] + " ");
+        }
+        System.out.println();
     }
     //&i
     private Stage getStage(ActionEvent event) {
@@ -80,6 +91,8 @@ public class FileSave_ActivityController implements Initializable {
     public void Report(ActionEvent event) throws Exception {
         if(fArchivo != null) {
             //SaveFile(Data, file);
+            Report rReport = new Report(fList, iArr);
+            rReport.generateReport(fArchivo.getPath(),fArchivo.getName());
             Parent root = FXMLLoader.load(getClass().getResource("Results_Activity.fxml"));
             Scene scene = new Scene(root);
             Button btnNext = (Button) event.getSource();

@@ -22,15 +22,15 @@ public class Files {
     ArrayList<String> sArrLines = new ArrayList<String>();
     String sName;
     
-    Files() {
+    public Files() {
         sName = "";
     }
     
     public Boolean openFile(String sName) {
-        File fFile = new File(sName);
+        //File fFile = new File(sName);
         String line;
         try (
-            InputStream fis = new FileInputStream("the_file_name");
+            InputStream fis = new FileInputStream(sName);
             InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
             BufferedReader br = new BufferedReader(isr);
         ) {
@@ -62,7 +62,7 @@ public class Files {
         return sArrLines.get(iPos);
     }
     
-    public int Length() {
+    public int length() {
         return sArrLines.size();
     }
     
