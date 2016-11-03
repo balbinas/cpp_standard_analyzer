@@ -46,7 +46,7 @@ public class Comments {
     public boolean startParameters(String sLine) {
         sLine = sLine.trim();
         sLine = sLine.toLowerCase();
-        sLine.replace(":", "");
+        sLine = sLine.replace(":", "");
         return(sLine.equals("parameters"));
     }
     //&i
@@ -59,7 +59,7 @@ public class Comments {
     public boolean startReturn(String sLine) {
         sLine = sLine.trim();
         sLine = sLine.toLowerCase();
-        sLine.replace(":", "");
+        sLine = sLine.replace(":", "");
         return(sLine.equals("returns"));
     }
     //&i
@@ -74,6 +74,11 @@ public class Comments {
     //&i
     public void setFunctionName(String sLine) {
         sFunctionName = sLine.trim().toLowerCase();
+        sFunctionName = (sFunctionName.indexOf(" ") > 0)? sFunctionName.substring(0, sFunctionName.indexOf(" ")) : sFunctionName;
+    }
+    //&i
+    public void cleanParameters() {
+        listVars.clear();
     }
     //&i
     public int[] getParametersGrade() {
@@ -85,40 +90,45 @@ public class Comments {
     }
     //&i
     public boolean checkFunctionName(String sLine) {
-        System.out.println(sLine);
         String sArr [] = split(sLine, ' ');
         sArr[1] = split(sArr[1].toLowerCase(),'(')[0];
-        System.out.println(sArr[1]);
         return (sFunctionName.equals(sArr[1]));
     }
     //&i
     public int[] checkDeclarationsOfFunctions(String sLine) {
         ArrayList<String> sAux = new ArrayList<String>();
-        sAux.addAll(listVars);
-        int iConts[] = new int [4], iCantVars = 0, iRes;
+        if(listVars.size() > 0)
+            sAux.addAll(listVars);
+        int iConts[] = new int [3], iCantVars = 0, iRes = 0;
         sLine = sLine.substring(sLine.indexOf("(")+1);
-        String sArr [] = split(sLine, ',');
+        String sArr [] = split(sLine, ' ');
+        sArr = multipleSplit(sArr, ',');
         sArr[sArr.length - 1] = sArr[sArr.length - 1].replace(")", "");
         sArr[sArr.length - 1] = sArr[sArr.length - 1].replace("{", "");
+        //System.out.println("Tamaño parametros " + sArr.length + " ");
+        //for(int i = 0; i < sArr.length; i++)
+        //     System.out.print(sArr[i] + " ");
+        System.out.println("Lista de parametros: " + listVars.toString() + " " + listVars.size());
         for(int i = 1; i < sArr.length; i += 2) {
             sArr[i] = sArr[i].trim();
+            //System.out.println(sArr[i]);
             for (int j = 0; j < sAux.size(); j++) {
                 if(sArr[i].equals(sAux.get(j))) {
                     iConts[0]++;
                     sAux.remove(j);
-                    j = sAux.size();
+                    j = sAux.size() + 1;
+                    
                 }
             }
             iCantVars++;
         }
         iRes = iCantVars - iConts[0];
-        if (iCantVars == listVars.size()) {
+        if (iCantVars != listVars.size()) {
              iConts[1] += 1;
              sComments += "Parametros no concuerda tamaño, ";
         }
-       
         if(iRes != 0) {
-            iConts[1] = iRes;
+            iConts[1] += iRes;
         }
         else {
             iConts[0]++;
@@ -140,5 +150,20 @@ public class Comments {
         String [] sArr = new String[sALAux.size()];
         sArr = sALAux.toArray(sArr);
         return sArr;
+    }
+     //&i
+    private String [] multipleSplit(String sArr[], char sChar) {
+        ArrayList<String> sList = new ArrayList<String>();
+        for(int i = 0; i < sArr.length; i++) {
+            String sAux [] = split(sArr[i], sChar);
+            for(int j = 0; j < sAux.length; j++) {
+                if(!sAux[j].trim().equals(""))
+                    sList.add(sAux[j]);
+            }
+        }
+        String [] sRes = new String[sList.size()];
+        sRes = sList.toArray(sArr);
+        //System.out.println(sList.toString());
+        return sRes;
     }
 }

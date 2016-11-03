@@ -64,7 +64,7 @@ public class Report {
             System.out.println("Abre Archivo");
             fArr.removeBlankLines();
             System.out.println("Cantidad de lineas: " + fArr.length());
-            // Comentario Inicial
+            // Initial Comment
             if(comComments.isAFunctionComment(fArr.getLine(iCont))) {
                     String sLine = fArr.getLine(iCont).trim();
                     while(!sLine.equals("*/")) {
@@ -72,43 +72,57 @@ public class Report {
                         sLine = fArr.getLine(iCont).trim();
                     }
             }
-            // Leer resto del archivo
+            // Read the rest of the file
             for(int i = iCont + 1; i < fArr.length(); i++) {
                 // System.out.println(fArr.getLine(i));
-                // Si es un comentario
+                // if it's a comment
                 if(comComments.isAFunctionComment(fArr.getLine(i))) {
                     iName = 0;
                     String sLine = fArr.getLine(i);
                     while(!comComments.endOfComment(sLine)) {
-                        i++;
-                        sLine = fArr.getLine(i); 
+                        i++; sLine = fArr.getLine(i); 
+                        //System.out.println(fArr.getLine(i));
                         if(!comComments.startParameters(sLine) && (iName == 0)) {
+                            //System.out.println("Funcion: " + sLine);
                             comComments.setFunctionName(sLine);
                             iName++;
                         }
-                        else if(comComments.startParameters(sLine)) {
-                            while(!comComments.startReturn(sLine) && !comComments.endOfComment(sLine)){
-                                i++;
-                                sLine = fArr.getLine(i);
-                                comComments.saveParameters(sLine);
+                        else {
+                            if(comComments.startParameters(sLine)) {
+                                comComments.cleanParameters();
+                                i++; sLine = fArr.getLine(i).trim();
+                                while(!comComments.startReturn(sLine) && !comComments.endOfComment(sLine)){
+                                    //System.out.println("Parametros agregar: " + sLine);
+                                    if(!sLine.split(" ")[0].toLowerCase().equals("none"))
+                                        comComments.saveParameters(sLine);
+                                    i++; sLine = fArr.getLine(i).trim();
+                                }
                             }
-                        }                       }
-                    // viene funcion
+                        }
+                    }
                     sLine = fArr.getLine(++i);
                     int iIndex = (comComments.checkFunctionName(sLine))? 0 : 1;
+                    //System.out.println("Index: " + iIndex);
                     int iArrCom[] = comComments.checkDeclarationsOfFunctions(sLine);
                     iCommentsFunctions[iIndex] += 1; 
-                    iCommentsFunctions[0] = iArrCom[0];
-                    iCommentsFunctions[1] = iArrCom[1];
-                    System.out.println("Funcion: " + comComments.getFunctionName() 
+                    System.out.println("Funcion Name: " + comComments.getFunctionName() 
                             + " Comentarios: " + iCommentsFunctions[0] + " Incorrectas: " + iCommentsFunctions[1]);
-
+                    iCommentsFunctions[0] += iArrCom[0];
+                    iCommentsFunctions[1] += iArrCom[1];
+                    System.out.println("Funcion: " + comComments.getFunctionName() 
+                            + " Comentarios: " + iArrCom[0] + " Incorrectas: " + iArrCom[1]);
+                }
+                // if it's a function
+                String sLine = fArr.getLine(i);
+                if(vVars.isAFunction(sLine)) {
+                    // viene funcion
                     int iArr[] = vVars.checkDeclarationsOfFunctions(sLine);
                     iVars[0] += iArr[0];
                     iVars[1] += iArr[1];
+                    System.out.println("Variables Correctas: " + iArr[0] + " Incorrectas: " + iArr[1]);
                     i++;
                 }
-                //Si es una declaración de variables
+                //if is a variables declaration
                 if(vVars.isADeclaration(fArr.getLine(i))) {
                     int iArr[] = vVars.checkDeclarations(fArr.getLine(i));
                     iVars[0] += iArr[0];

@@ -27,7 +27,7 @@ public class Variables {
             int iPos = sLine.indexOf(sVariables[i]);
             if(iPos > -1) {
                 if(sLine.charAt(iPos + sVariables[i].length()) == ' ') {
-                    System.out.println(iPos + " " + sVariables[i]);
+                    System.out.print(iPos + " " + sVariables[i] + " ");
                     String sArr [] = split(sLine.substring(iPos + 
                             sVariables[i].length() + 1), ',');
                     sArr = deleteAssign(sArr, "=");
@@ -89,11 +89,16 @@ public class Variables {
     public int[] checkDeclarationsOfFunctions(String sLine) {
         int iConts[] = new int [3];
         sLine = sLine.substring(sLine.indexOf("(")+1);
-        String sArr [] = split(sLine, ',');
+        String sArr [] = split(sLine, ' ');
+        sArr = multipleSplit(sArr, ',');
         sArr = deleteChar(sArr, ")");
         sArr = deleteChar(sArr, "{");
+        //System.out.println("Tamaño parametros " + sArr.length + " ");
+        //for(int i = 0; i < sArr.length; i++)
+        //     System.out.print(sArr[i] + " ");
+        //System.out.println();
         for(int i = 0; i < sArr.length; i += 2) {
-            sArr[i] = sArr[i].trim();
+            sArr[i] = sArr[i].trim();   //System.out.println(sArr[i + 1]);
             for(int j = 0; j < sVariables.length; j++) {
                 if(sArr[i].equals(sVariables[j])) {
                     if(sArr[i + 1].charAt(0) == sVariables[j].charAt(0)) {
@@ -108,6 +113,15 @@ public class Variables {
             iConts[2] = iConts[0] + iConts[1];
         }
         return iConts;
+    }
+    //&i
+    public boolean isAFunction(String sLine) {
+        String sArr[] = split(sLine, '(');
+        String sAux2[] = split(sArr[0],' ');
+        if(sAux2.length > 1 && sArr.length > 1) {
+            return true;
+        }
+        return false;
     }
     //&i
     private String [] deleteChar(String sAux[], String sCad) {
@@ -148,7 +162,8 @@ public class Variables {
         for(int i = 0; i < sArr.length; i++) {
             String sAux [] = split(sArr[i], sChar);
             for(int j = 0; j < sAux.length; j++) {
-                sList.add(sAux[j]);
+                if(!sAux[j].trim().equals(""))
+                    sList.add(sAux[j]);
             }
         }
         String [] sRes = new String[sList.size()];
