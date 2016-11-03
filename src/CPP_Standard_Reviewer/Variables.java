@@ -11,16 +11,17 @@ import java.util.ArrayList;
  *
  * @author Faintinger
  */
+//&p-Variables
 public class Variables {
     ArrayList<String> sArrVars = new ArrayList<>();
     ArrayList<String> sArrTypes = new ArrayList<>();
     String [] sVariables ={"bool", "int", "float", "string", "char", "double"};
     String sType;
-    
+    //&i
     public Variables() {
         sType = "";
     }
-    
+    //&i
     public Boolean isADeclaration(String sLine){
         for(int i = 0; i < sVariables.length; i++) {
             int iPos = sLine.indexOf(sVariables[i]);
@@ -53,7 +54,7 @@ public class Variables {
         }
         return false;
     }
-    
+    //&i
     public int[] checkDeclarations(String sLine) {
         String sAux = sLine.substring(sLine.indexOf(sType) + sType.length());
         sAux = sAux.trim();
@@ -84,44 +85,40 @@ public class Variables {
         }
         return iConts;
     }
-    
-    public int[] checkDeclarationsOfFunctions(ArrayList<String> sArrVars, String sLine) {
+    //&i
+    public int[] checkDeclarationsOfFunctions(String sLine) {
         int iConts[] = new int [3];
         sLine = sLine.substring(sLine.indexOf("(")+1);
-        String sArr [] = split(sLine, ' ');
-        sArr = multipleSplit(sArr, ',');
+        String sArr [] = split(sLine, ',');
         sArr = deleteChar(sArr, ")");
         sArr = deleteChar(sArr, "{");
         for(int i = 0; i < sArr.length; i += 2) {
-            if('A' <= sType.charAt(0) && sType.charAt(0) <= 'Z') {
-                if(sArr[i].substring(0,2).equals(sType.substring(0,2))) {
-                    iConts[0]++;
+            sArr[i] = sArr[i].trim();
+            for(int j = 0; j < sVariables.length; j++) {
+                if(sArr[i].equals(sVariables[j])) {
+                    if(sArr[i + 1].charAt(0) == sVariables[j].charAt(0)) {
+                        iConts[0]++;
+                    }
+                    else {
+                        iConts[1]++;
+                    }
+                    j = sVariables.length;
                 }
-                else {
-                    iConts[1]++;
-                }
-            } 
-            else {
-                if(sArr[i].charAt(0) == sType.charAt(0)) {
-                    iConts[0]++;
-                }
-                else {
-                    iConts[1]++;
-                }
-            }
+            }               
             iConts[2] = iConts[0] + iConts[1];
         }
         return iConts;
     }
-    
+    //&i
     private String [] deleteChar(String sAux[], String sCad) {
         String sRet[] = new String [sAux.length];
         for (int i = 0; i < sAux.length; i++) {
             //System.out.println(sAux[i]);
-            sRet[i] = (sAux[i].indexOf(sCad) > -1)? sAux[i].replaceAll(sCad, "") : sAux[i];
+            sRet[i] = (sAux[i].indexOf(sCad) > -1)? sAux[i].replace(sCad, "") : sAux[i];
         }
         return sRet;
     }
+    //&i
     private String [] deleteAssign(String sAux[], String sCad) {
         String sRet[] = new String [sAux.length];
         for (int i = 0; i < sAux.length; i++) {
@@ -130,7 +127,7 @@ public class Variables {
         }
         return sRet;
     }
-    
+    //&i
     private String [] split(String sLine, char sChar) {
         ArrayList<String> sALAux = new ArrayList<String>();
         int iStart = 0;
@@ -145,7 +142,7 @@ public class Variables {
         sArr = sALAux.toArray(sArr);
         return sArr;
     }
-    
+    //&i
     private String [] multipleSplit(String sArr[], char sChar) {
         ArrayList<String> sList = new ArrayList<String>();
         for(int i = 0; i < sArr.length; i++) {
