@@ -14,7 +14,7 @@ import java.util.ArrayList;
 //&p-Comments
 public class Comments {
     
-    private String sComments, sFunctionName;
+    private String sComments, sFunctionName, sFileName;
     private int iInitialComments[];
     private int iComments[];
     private int iParameters[];
@@ -22,11 +22,40 @@ public class Comments {
     //&i
     Comments() {
         sFunctionName = "";
+        sFileName = "";
         sComments = "Comentarios: ";
         iInitialComments = new int [2];
         iComments = new int [2];
         iParameters = new int [2];
         listVars = new ArrayList<String>();
+    }
+    
+    //&i
+    public void saveFileName(String sLine) {
+        sLine = sLine.trim();
+        sLine = sLine.toLowerCase();
+        sFileName = sLine;
+    }
+    //&i
+    public int[] checkFileName(String sName) {
+        int iGrade[] = new int [2];
+        String sAux[] = split(sName, '.');
+        int iPos;
+        System.out.println(sFileName + " " + sName);
+        if (sFileName.indexOf(".") > -1) {
+            iPos = (split(sFileName, '.')[0].equals(sAux[0]))? 0 : 1;
+            iGrade[iPos]++;
+        } else {
+            if(sFileName.equals(sAux[0])) {
+                iGrade[0]++;
+                iGrade[1]++;
+                sComments += "Name match but do not have the .cpp extension, ";
+            } else {
+                iGrade[1]++;
+                sComments += "Initial Comment do not have the correct file name, ";
+            }
+        }
+        return iGrade;
     }
     //&i
     public boolean isAComment(String sLine) {
@@ -125,7 +154,7 @@ public class Comments {
         iRes = iCantVars - iConts[0];
         if (iCantVars != listVars.size()) {
              iConts[1] += 1;
-             sComments += "Parametros no concuerda tamaño, ";
+             sComments += sFunctionName + " parameters size do not match, ";
         }
         if(iRes != 0) {
             iConts[1] += iRes;

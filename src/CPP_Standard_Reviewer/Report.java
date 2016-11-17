@@ -17,16 +17,38 @@ public class Report {
     Files fArr;
     Variables vVars;
     Comments comComments;
+    Libraries libLibraries;
     ArrayList<File> fList;
     ArrayList<String> sLComments = new ArrayList<String>();
-    int iVars [] = new int [2];
-    int iCommentsFunctions[] = new int[2];
-    Double [][] iReportCriterias;
+    int iVars [] = new int [2]; //grades of variables
+    int iCommentsFunctions[] = new int[2]; // grades of comments
+    int iFileName[] = new int[2]; // grades of file name
+    int iInitialComments[] = new int [2]; // grade of the initial comments
+    int iFunctionHeaders[] = new int [2]; // grade of the function declaration
+    int iLibraries [] = new int [2]; // grade of the libraries
+    double [][] iReportCriterias;
     int [] iGradCrit;
+    //&i
     public Report(ArrayList<File> fAux, int [] iGC) {
         fList = fAux;
         iGradCrit = iGC;
-        iReportCriterias = new Double [fAux.size()][12];
+        iReportCriterias = new double [fAux.size()][13];
+    }
+    //&i
+    private ArrayList<String> listFiles() {
+        ArrayList<String> files = new ArrayList<String>();
+        for(int i = 0; i < fList.size(); i++)
+            files.add(fList.get(i).getName());
+        return files;
+    }
+    //&i
+    private void cleanVariables() {
+        iVars = new int [2]; //grades of variables
+        iCommentsFunctions = new int[2]; // grades of comments
+        iFileName = new int[2]; // grades of file name
+        iInitialComments = new int [2]; // grade of the initial comments
+        iFunctionHeaders = new int [2]; // grade of the functions
+        iLibraries = new int [2]; // grade of the libraries
     }
     //&i
     public Boolean generateReport(String sPath, String sName) {
@@ -37,16 +59,26 @@ public class Report {
             }
              System.out.println();
         }
+        Excel excReport = new Excel(iReportCriterias, listFiles());
         return true;
     }
     //&i
     public Boolean gradeFiles() {
         //try {
             for(int i = 0; i < fList.size(); i++) {
+                cleanVariables();
                 calculateFile(i);
+                iReportCriterias[i][0] = iGradCrit[0] * ((iFileName[0] * 1.0) 
+                        / (iFileName[0] + iFileName[1]));
                 iReportCriterias[i][1] = iGradCrit[1] * ((iVars[0] * 1.0)/(iVars[0] + iVars[1]));
+                iReportCriterias[i][4] = iGradCrit[4] * (iInitialComments[0] * 1.0)
+                        / (iInitialComments[0] + iInitialComments[1]);
+                iReportCriterias[i][5] = iGradCrit[5] * ((iLibraries[0] * 1.0) 
+                        / (iLibraries[0] + iLibraries[1]));
                 iReportCriterias[i][6] = iGradCrit[6] * ((iCommentsFunctions[0] * 1.0)
-                            / (iCommentsFunctions[0] + iCommentsFunctions[1]));
+                        / (iCommentsFunctions[0] + iCommentsFunctions[1]));
+                iReportCriterias[i][7] = iGradCrit[7] * ((iFunctionHeaders[0] * 1.0)
+                        / (iFunctionHeaders[0] + iFunctionHeaders[1]));
             }
         //}
         //catch(Exception ex) {
@@ -59,6 +91,7 @@ public class Report {
         fArr = new Files();
         vVars = new Variables();
         comComments = new Comments();
+        libLibraries = new Libraries();
         int iCont = 0, iName = 0;
         if(fArr.openFile(fList.get(iPos).getPath())) {
             System.out.println("Abre Archivo");
@@ -66,8 +99,12 @@ public class Report {
             System.out.println("Cantidad de lineas: " + fArr.length());
             // Initial Comment
             if(comComments.isAFunctionComment(fArr.getLine(iCont))) {
-                    String sLine = fArr.getLine(iCont).trim();
-                    while(!sLine.equals("*/")) {
+                    String sLine = fArr.getLine(++iCont).trim();
+                    comComments.saveFileName(sLine);
+                    int iAux[] = comComments.checkFileName(fList.get(iPos).getName());
+                    iFileName[0] = iAux[0];
+                    iFileName[1] = iAux[1];
+                    while(!comComments.endOfComment(sLine)) {
                         iCont++;
                         sLine = fArr.getLine(iCont).trim();
                     }
@@ -75,6 +112,14 @@ public class Report {
             // Read the rest of the file
             for(int i = iCont + 1; i < fArr.length(); i++) {
                 // System.out.println(fArr.getLine(i));
+                //if is an include statement
+                if(libLibraries.isALibraryStatement(fArr.getLine(i))) {
+                    libLibraries.checkLibrary(fArr.getLine(i));
+                }
+                //if is a using namespace
+                if(libLibraries.isUsing(fArr.getLine(i))) {
+                   libLibraries.checkSTD(fArr.getLine(i));
+                }
                 // if it's a comment
                 if(comComments.isAFunctionComment(fArr.getLine(i))) {
                     iName = 0;
@@ -115,11 +160,15 @@ public class Report {
                 // if it's a function
                 String sLine = fArr.getLine(i);
                 if(vVars.isAFunction(sLine)) {
+                    int iFun[] = vVars.checkFunction(sLine);
+                    iFunctionHeaders[0] += iFun[0];
+                    iFunctionHeaders[1] += iFun[1];
+                    System.out.println("Declaracion de funcion Correctas: " + iFun[0] + " Incorrectas: " + iFun[1]);
                     // viene funcion
                     int iArr[] = vVars.checkDeclarationsOfFunctions(sLine);
                     iVars[0] += iArr[0];
                     iVars[1] += iArr[1];
-                    System.out.println("Variables Correctas: " + iArr[0] + " Incorrectas: " + iArr[1]);
+                    System.out.println("Variables en funciones Correctas: " + iArr[0] + " Incorrectas: " + iArr[1]);
                     i++;
                 }
                 //if is a variables declaration
@@ -130,6 +179,8 @@ public class Report {
                     System.out.println("Variables Correctas: " + iArr[0] + " Incorrectas: " + iArr[1]);
                 }
             }
+            iLibraries = libLibraries.getGrades();
+            System.out.println(libLibraries.getComments());
             return true;
         } 
         else {

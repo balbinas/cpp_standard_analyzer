@@ -27,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
+import javafx.scene.control.Alert; 
 
 /**
  *
@@ -131,8 +132,11 @@ public class FXMLDocumentController implements Initializable {
             stStage.setScene(scene);
             stStage.show();
         } else {
-            JOptionPane.showMessageDialog(null, 
-                    "The are no files selected...");
+            //JOptionPane.showMessageDialog(null, 
+            //        "The are no files selected...");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("No files selected...");
+            alert.showAndWait();
         }
         
     }

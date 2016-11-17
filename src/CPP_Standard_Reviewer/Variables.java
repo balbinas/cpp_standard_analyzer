@@ -86,6 +86,27 @@ public class Variables {
         return iConts;
     }
     //&i
+    public int[] checkFunction(String sLine) {
+        int iCont[] = new int [2];
+        String sAux[] = split(sLine, ' ');
+        for(int i = 0; i < sVariables.length; i++) {
+            if(sAux[0].indexOf(sVariables[i]) > -1 || sAux[0].equals("void") || sAux[0].matches("[A-Z][a-z]+")) {
+                iCont[0]++;
+                i = sVariables.length;
+            }
+        }
+        iCont[1] = (iCont[0] > 0)? 0 : 1;
+        System.out.println(sAux[0] + " " + sAux[1]);
+        if(split(sAux[1],'(')[0].matches("[a-z][a-zA-Z0-9]+")) {
+            iCont[0]++;
+        } 
+        else {
+            iCont[1]++;
+        } 
+        System.out.println(iCont[0] + " " + iCont[1]);
+        return iCont;
+    }
+    //&i
     public int[] checkDeclarationsOfFunctions(String sLine) {
         int iConts[] = new int [3];
         sLine = sLine.substring(sLine.indexOf("(")+1);
@@ -118,7 +139,7 @@ public class Variables {
     public boolean isAFunction(String sLine) {
         String sArr[] = split(sLine, '(');
         String sAux2[] = split(sArr[0],' ');
-        if(sAux2.length > 1 && sArr.length > 1) {
+        if(isAType(sAux2[0]) && sAux2.length > 1 && sArr.length > 1) {
             return true;
         }
         return false;
@@ -170,5 +191,14 @@ public class Variables {
         sRes = sList.toArray(sArr);
         //System.out.println(sList.toString());
         return sRes;
+    }
+    //&i
+    private boolean isAType(String sLine) {
+         for(int i = 0; i < sVariables.length; i++) {
+            if(sLine.indexOf(sVariables[i]) > -1 || sLine.equals("void") || sLine.matches("[A-Z][a-z]+")) {
+                return true;
+            }
+        }
+        return false;
     }
 }
