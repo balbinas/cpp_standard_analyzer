@@ -52,8 +52,15 @@ public class FXMLDocumentController implements Initializable {
             }
         }
         fList = sFileNames;
-        if(!sFiles.equals(""))
-             JOptionPane.showMessageDialog(null, sFiles + "Are no cpp files");
+        if(!sFiles.equals("")) {
+            //JOptionPane.showMessageDialog(null, sFiles + "Are no cpp files");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("CPP Analizer");
+            alert.setHeaderText(null);
+            alert.setContentText(sFiles + "Are no cpp files");
+            alert.showAndWait();
+        }
+             
     }
     
     //&i
@@ -134,8 +141,10 @@ public class FXMLDocumentController implements Initializable {
         } else {
             //JOptionPane.showMessageDialog(null, 
             //        "The are no files selected...");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("No files selected...");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("CPP Analizer");
+            alert.setHeaderText(null);
+            alert.setContentText("No files selected...");
             alert.showAndWait();
         }
         

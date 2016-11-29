@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -64,8 +65,8 @@ public class CriteriaFill_ActivityController implements Initializable {
         int iFName = toInt(tfCampo.getText());
         tfCampo = (TextField) stStage.getScene().lookup("#Variable_Criteria");
         int iVariable = toInt(tfCampo.getText());
-        tfCampo = (TextField) stStage.getScene().lookup("#Constant_Criteria");
-        int iConstant = toInt(tfCampo.getText());
+        //tfCampo = (TextField) stStage.getScene().lookup("#Constant_Criteria");
+        //int iConstant = toInt(tfCampo.getText());
         tfCampo = (TextField) stStage.getScene().lookup("#Program_Criteria");
         int iProgram = toInt(tfCampo.getText());
         tfCampo = (TextField) stStage.getScene().lookup("#I_Comments_Criteria");
@@ -84,11 +85,11 @@ public class CriteriaFill_ActivityController implements Initializable {
         int iInstructions = toInt(tfCampo.getText());
         tfCampo = (TextField) stStage.getScene().lookup("#Blank_Criteria");
         int iBlank = toInt(tfCampo.getText());
-        int iArr[] = {iFName, iVariable, iConstant, iProgram, iIComments
+        int iArr[] = {iFName, iVariable, /*iConstant*/0, iProgram, iIComments
                 , iLibrary, iCFun, iFHeader, iIndentation, iComments 
                 , iInstructions, iBlank};
         iArrCriteria = iArr;
-        return(100 == (iFName + iVariable + iConstant + iProgram + iIComments
+        return(100 == (iFName + iVariable + /*iConstant*/0 + iProgram + iIComments
                 + iLibrary + iCFun + iFHeader + iIndentation + iComments 
                 + iInstructions + iBlank));
     }
@@ -104,8 +105,13 @@ public class CriteriaFill_ActivityController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } else {
-            JOptionPane.showMessageDialog(null, 
-                    "The amount of the fields do not sum a total of 100 points.");
+            //JOptionPane.showMessageDialog(null, 
+            //        "The amount of the fields do not sum a total of 100 points.");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("CPP Analizer");
+            alert.setHeaderText(null);
+            alert.setContentText("The amount of the fields do not sum a total of 100 points.");
+            alert.showAndWait();
         }
         
     }

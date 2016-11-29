@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
@@ -101,8 +102,13 @@ public class FileSave_ActivityController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } else {
-            JOptionPane.showMessageDialog(null, 
-                    "There are no file path and name selected.");
+            //JOptionPane.showMessageDialog(null, 
+            //        "There are no file path and name selected.");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("CPP Analizer");
+            alert.setHeaderText(null);
+            alert.setContentText("There are no file path and name selected.");
+            alert.showAndWait();
         }
         
     }

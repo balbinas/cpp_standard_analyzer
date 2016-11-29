@@ -34,7 +34,7 @@ public class Excel {
     
     
     
-    public Excel (double grades[][], ArrayList<String> listArchivos){
+    public Excel (double grades[][], ArrayList<String> listArchivos, String sPath, String sName){
                   
         listArchivos.add("Average");
         int iSize = listArchivos.size();
@@ -44,8 +44,7 @@ public class Excel {
         for(int i = 0; i < iSize - 1; i++){
            for(int j = 0; j < 12; j++){
                dGradeCriterea[i][j] = grades[i][j];
-               //dGradeCriterea[i][j] = j;
-               System.out.print(dGradeCriterea[i][j] + " ");
+               //System.out.print(dGradeCriterea[i][j] + " ");
             }
            System.out.println();
         }
@@ -130,7 +129,8 @@ public class Excel {
             }
             sheet.autoSizeColumn(0);
             
-            FileOutputStream fileOut = new FileOutputStream("workbook.xlsx");
+            //FileOutputStream fileOut = new FileOutputStream("workbook.xlsx");
+            FileOutputStream fileOut = new FileOutputStream(sPath);
             workbook.write(fileOut);
             fileOut.close();
         } catch (Exception e) {
@@ -235,7 +235,8 @@ public class Excel {
             for (int j = 0; j < 12; j++) {
             dSuma += dGradeCriterea[i][j]; 
             }
-            dGradeCriterea[i][12] = dSuma/12;
+            //dGradeCriterea[i][12] = dSuma/12;
+            dGradeCriterea[i][12] = dSuma;
         }
     }
 }

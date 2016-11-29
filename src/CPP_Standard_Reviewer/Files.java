@@ -49,7 +49,8 @@ public class Files {
                 for (int j = 0; j < sArrLines.get(i).length(); j++) { 
                     if ((sArrLines.get(i).charAt(j) != ' ' 
                         && sArrLines.get(i).charAt(j) != '\t' 
-                        && sArrLines.get(i).charAt(j) != '\n')) { 
+                        && sArrLines.get(i).charAt(j) != '\n'
+                        && !sArrLines.get(i).trim().equals(""))) { 
                         sArrAux.add(sArrLines.get(i)); 
                         break;
                     }

@@ -18,6 +18,7 @@ public class Report {
     Variables vVars;
     Comments comComments;
     Libraries libLibraries;
+    Format forFormat;
     ArrayList<File> fList;
     ArrayList<String> sLComments = new ArrayList<String>();
     int iVars [] = new int [2]; //grades of variables
@@ -26,6 +27,8 @@ public class Report {
     int iInitialComments[] = new int [2]; // grade of the initial comments
     int iFunctionHeaders[] = new int [2]; // grade of the function declaration
     int iLibraries [] = new int [2]; // grade of the libraries
+    int iInstructions [] = new int [2]; // grade the instructions per line
+    int iBlankSpaces [] = new int [2]; // grade the blank spaces between operations
     double [][] iReportCriterias;
     int [] iGradCrit;
     //&i
@@ -59,7 +62,7 @@ public class Report {
             }
              System.out.println();
         }
-        Excel excReport = new Excel(iReportCriterias, listFiles());
+        Excel excReport = new Excel(iReportCriterias, listFiles(), sPath, sName);
         return true;
     }
     //&i
@@ -71,6 +74,7 @@ public class Report {
                 iReportCriterias[i][0] = iGradCrit[0] * ((iFileName[0] * 1.0) 
                         / (iFileName[0] + iFileName[1]));
                 iReportCriterias[i][1] = iGradCrit[1] * ((iVars[0] * 1.0)/(iVars[0] + iVars[1]));
+                iReportCriterias[i][2] = 0;
                 iReportCriterias[i][4] = iGradCrit[4] * (iInitialComments[0] * 1.0)
                         / (iInitialComments[0] + iInitialComments[1]);
                 iReportCriterias[i][5] = iGradCrit[5] * ((iLibraries[0] * 1.0) 
@@ -79,6 +83,10 @@ public class Report {
                         / (iCommentsFunctions[0] + iCommentsFunctions[1]));
                 iReportCriterias[i][7] = iGradCrit[7] * ((iFunctionHeaders[0] * 1.0)
                         / (iFunctionHeaders[0] + iFunctionHeaders[1]));
+                iReportCriterias[i][10] = iGradCrit[10] * ((iInstructions[0] * 1.0)
+                        / (iInstructions[0] + iInstructions[1]));
+                iReportCriterias[i][11] = iGradCrit[11] * ((iBlankSpaces[0] * 1.0)
+                        / (iBlankSpaces[0] + iBlankSpaces[1]));
             }
         //}
         //catch(Exception ex) {
@@ -92,7 +100,9 @@ public class Report {
         vVars = new Variables();
         comComments = new Comments();
         libLibraries = new Libraries();
+        forFormat = new Format();
         int iCont = 0, iName = 0;
+        boolean isAFunction = false;
         if(fArr.openFile(fList.get(iPos).getPath())) {
             System.out.println("Abre Archivo");
             fArr.removeBlankLines();
@@ -107,6 +117,7 @@ public class Report {
                     while(!comComments.endOfComment(sLine)) {
                         iCont++;
                         sLine = fArr.getLine(iCont).trim();
+                        iInitialComments[0]++;
                     }
             }
             // Read the rest of the file
@@ -115,10 +126,12 @@ public class Report {
                 //if is an include statement
                 if(libLibraries.isALibraryStatement(fArr.getLine(i))) {
                     libLibraries.checkLibrary(fArr.getLine(i));
+                    i++;
                 }
                 //if is a using namespace
                 if(libLibraries.isUsing(fArr.getLine(i))) {
                    libLibraries.checkSTD(fArr.getLine(i));
+                   i++;
                 }
                 // if it's a comment
                 if(comComments.isAFunctionComment(fArr.getLine(i))) {
@@ -157,8 +170,10 @@ public class Report {
                     System.out.println("Funcion: " + comComments.getFunctionName() 
                             + " Comentarios: " + iArrCom[0] + " Incorrectas: " + iArrCom[1]);
                 }
-                // if it's a function
+                
                 String sLine = fArr.getLine(i);
+                
+                // if it's a function
                 if(vVars.isAFunction(sLine)) {
                     int iFun[] = vVars.checkFunction(sLine);
                     iFunctionHeaders[0] += iFun[0];
@@ -169,8 +184,21 @@ public class Report {
                     iVars[0] += iArr[0];
                     iVars[1] += iArr[1];
                     System.out.println("Variables en funciones Correctas: " + iArr[0] + " Incorrectas: " + iArr[1]);
+                    
+                    // Check the ending of the statement and it is just one per line
+                    forFormat.setbFunction(true);
+                    forFormat.checkInstructionsPerLine(sLine);
+                    forFormat.setbFunction(false);
+                    isAFunction = true;
                     i++;
                 }
+                // Check the ending of the statement and it is just one per line
+                if(!isAFunction) {
+                    forFormat.checkInstructionsPerLine(sLine);
+                }
+                isAFunction = false;
+                // Check if exist and operation and review the space between operations format
+                forFormat.checkSpaces(sLine);
                 //if is a variables declaration
                 if(vVars.isADeclaration(fArr.getLine(i))) {
                     int iArr[] = vVars.checkDeclarations(fArr.getLine(i));
@@ -180,6 +208,8 @@ public class Report {
                 }
             }
             iLibraries = libLibraries.getGrades();
+            iInstructions = forFormat.getEvalInstructions();
+            iBlankSpaces = forFormat.getEvalSpaces();
             System.out.println(libLibraries.getComments());
             return true;
         } 
