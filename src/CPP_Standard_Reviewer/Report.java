@@ -27,15 +27,19 @@ public class Report {
     int iInitialComments[] = new int [2]; // grade of the initial comments
     int iFunctionHeaders[] = new int [2]; // grade of the function declaration
     int iLibraries [] = new int [2]; // grade of the libraries
+    int iIndentation [] = new int [2]; // grade the indentation of the file
+    int iOneLineComments[] = new int [2]; // grade of the one line comments
     int iInstructions [] = new int [2]; // grade the instructions per line
     int iBlankSpaces [] = new int [2]; // grade the blank spaces between operations
     double [][] iReportCriterias;
     int [] iGradCrit;
+    String sComments[];
     //&i
     public Report(ArrayList<File> fAux, int [] iGC) {
         fList = fAux;
         iGradCrit = iGC;
         iReportCriterias = new double [fAux.size()][13];
+        sComments = new String[fAux.size() + 1];
     }
     //&i
     private ArrayList<String> listFiles() {
@@ -52,6 +56,36 @@ public class Report {
         iInitialComments = new int [2]; // grade of the initial comments
         iFunctionHeaders = new int [2]; // grade of the functions
         iLibraries = new int [2]; // grade of the libraries
+        iIndentation = new int [2]; // grade the indentation of the file
+        iOneLineComments = new int [2]; // grade of the one line comments
+        iInstructions = new int [2]; // grade the instructions per line
+        iBlankSpaces = new int [2]; // grade the blank spaces between operations
+    }
+    private double promedioGeneral(int iPos) {
+        double dSumaB = 0, dSumaM = 0;
+        dSumaB = iVars[0] + iCommentsFunctions[0] + iFileName[0] + iInitialComments[0] 
+                + iFunctionHeaders[0] + iLibraries[0] + iIndentation[0] 
+                + iOneLineComments[0] + iInstructions[0] + iBlankSpaces[0];
+        dSumaM = iVars[1] + iCommentsFunctions[1] + iFileName[1] + iInitialComments[1] 
+                + iFunctionHeaders[1] + iLibraries[1] + iIndentation[1] 
+                + iOneLineComments[1] + iInstructions[1] + iBlankSpaces[1];
+        return (dSumaB + dSumaM == 0) ? 0 : 100 * (dSumaB /(dSumaB + dSumaM));
+    }
+    //&i
+    private double calculateContentGrade(int iPos) {
+        double dSum =0;
+        if(iGradCrit[3] != 100) {
+            for(int i = 0; i < 12; i++) {
+                iReportCriterias[iPos][i] = Double.isNaN(iReportCriterias[iPos][i])? iGradCrit[i] : iReportCriterias[iPos][i];
+                dSum += iReportCriterias[iPos][i];
+            }
+            return (iGradCrit[3] * (dSum / (100 - iGradCrit[3])));
+        }
+        else {
+            for(int i = 0; i < 12; i++) 
+                iReportCriterias[iPos][i] = Double.isNaN(iReportCriterias[iPos][i])? iGradCrit[i] : iReportCriterias[iPos][i];
+            return promedioGeneral(iPos);
+        }
     }
     //&i
     public Boolean generateReport(String sPath, String sName) {
@@ -62,7 +96,7 @@ public class Report {
             }
              System.out.println();
         }
-        Excel excReport = new Excel(iReportCriterias, listFiles(), sPath, sName);
+        Excel excReport = new Excel(iReportCriterias, listFiles(), sPath, sName, sComments);
         return true;
     }
     //&i
@@ -70,7 +104,11 @@ public class Report {
         //try {
             for(int i = 0; i < fList.size(); i++) {
                 cleanVariables();
-                calculateFile(i);
+                Files fAux = new Files();
+                fAux.openFile(fList.get(i).getPath());
+                fAux.removeBlankLines();
+                if(fAux.length() > 0) {
+                    calculateFile(i);
                 iReportCriterias[i][0] = iGradCrit[0] * ((iFileName[0] * 1.0) 
                         / (iFileName[0] + iFileName[1]));
                 iReportCriterias[i][1] = iGradCrit[1] * ((iVars[0] * 1.0)/(iVars[0] + iVars[1]));
@@ -83,10 +121,16 @@ public class Report {
                         / (iCommentsFunctions[0] + iCommentsFunctions[1]));
                 iReportCriterias[i][7] = iGradCrit[7] * ((iFunctionHeaders[0] * 1.0)
                         / (iFunctionHeaders[0] + iFunctionHeaders[1]));
+                iReportCriterias[i][8] = iGradCrit[8] * ((iIndentation[0] * 1.0)
+                        / (iIndentation[0] + iIndentation[1]));
+                iReportCriterias[i][9] = iGradCrit[9] * ((iOneLineComments[0] * 1.0)
+                        / (iOneLineComments[0] + iOneLineComments[1]));
                 iReportCriterias[i][10] = iGradCrit[10] * ((iInstructions[0] * 1.0)
                         / (iInstructions[0] + iInstructions[1]));
                 iReportCriterias[i][11] = iGradCrit[11] * ((iBlankSpaces[0] * 1.0)
                         / (iBlankSpaces[0] + iBlankSpaces[1]));
+                iReportCriterias[i][3] = calculateContentGrade(i);
+                }
             }
         //}
         //catch(Exception ex) {
@@ -172,7 +216,8 @@ public class Report {
                 }
                 
                 String sLine = fArr.getLine(i);
-                
+                // Check if the line is or has a one line comment and grade its length and content
+                comComments.checkLineComments(sLine);
                 // if it's a function
                 if(vVars.isAFunction(sLine)) {
                     int iFun[] = vVars.checkFunction(sLine);
@@ -188,13 +233,17 @@ public class Report {
                     // Check the ending of the statement and it is just one per line
                     forFormat.setbFunction(true);
                     forFormat.checkInstructionsPerLine(sLine);
+                    // Check the indentation of all the lines of code excluding comments
+                    forFormat.checkIndentation(sLine);
                     forFormat.setbFunction(false);
                     isAFunction = true;
                     i++;
                 }
                 // Check the ending of the statement and it is just one per line
+                // Check the indentation of all the lines of code excluding comments
                 if(!isAFunction) {
                     forFormat.checkInstructionsPerLine(sLine);
+                    forFormat.checkIndentation(sLine);
                 }
                 isAFunction = false;
                 // Check if exist and operation and review the space between operations format
@@ -210,7 +259,11 @@ public class Report {
             iLibraries = libLibraries.getGrades();
             iInstructions = forFormat.getEvalInstructions();
             iBlankSpaces = forFormat.getEvalSpaces();
-            System.out.println(libLibraries.getComments());
+            iOneLineComments = comComments.getLineCommentsGrade();
+            iIndentation = forFormat.getEvalIdentation();
+            sComments[iPos] = comComments.getComments() + libLibraries.getComments() + 
+                    forFormat.getComments();
+            //System.out.println(libLibraries.getComments());
             return true;
         } 
         else {

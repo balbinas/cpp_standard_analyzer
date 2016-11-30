@@ -27,14 +27,15 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
  *
  * @author Faintinger
  */
+//&p-Excel
 public class Excel {
     //ArrayList<String> listArchivos = new ArrayList<String>();
     private double dGradeCriterea[][] = null;
 
     
     
-    
-    public Excel (double grades[][], ArrayList<String> listArchivos, String sPath, String sName){
+    //&i
+    public Excel (double grades[][], ArrayList<String> listArchivos, String sPath, String sName, String [] sComments){
                   
         listArchivos.add("Average");
         int iSize = listArchivos.size();
@@ -67,7 +68,8 @@ public class Excel {
             "Comments",
             "Instructions per line",
             "Blank Spaces",     
-            "GRADE"
+            "GRADE",
+            "Comments"
             };
                
         try {             
@@ -89,7 +91,7 @@ public class Excel {
             XSSFRow rowhead = sheet.createRow((short)0);  
             rowhead.setHeightInPoints((2*sheet.getDefaultRowHeightInPoints()));
             XSSFCell cell;
-              for (int i = 0; i < 14; i++){
+              for (int i = 0; i < 15; i++){
                 cell = rowhead.createCell(i);
                 cell.setCellValue(sCritereas[i]);
                 cell.setCellStyle(style);
@@ -122,10 +124,11 @@ public class Excel {
                 for (int j = 0; j < 13; j++) {
                     cell = row.createCell(j+1);
                     cell.setCellValue(dGradeCriterea[i][j]);
-                    cell.setCellStyle(style2);
-                      
+                    cell.setCellStyle(style2); 
                 }
-                
+                cell = row.createCell(14);
+                cell.setCellValue(sComments[i]);
+                cell.setCellStyle(style2);
             }
             sheet.autoSizeColumn(0);
             
@@ -138,7 +141,7 @@ public class Excel {
         }
     }
     
-    
+    //&i
     private XSSFFont createFont(XSSFWorkbook wb){
         // Create a new font and alter it.
         XSSFFont font = wb.createFont();
@@ -148,7 +151,7 @@ public class Excel {
         font.setColor(new XSSFColor(new java.awt.Color(255, 255, 255)));
         return font;
     }
-    
+    //&i
     private XSSFFont createFont2(XSSFWorkbook wb){
         // Create a new font and alter it.
         XSSFFont font = wb.createFont();
@@ -157,7 +160,8 @@ public class Excel {
         font.setColor(new XSSFColor(new java.awt.Color(64, 64, 64)));
         return font;
     }
-        static private XSSFFont failFont(XSSFWorkbook wb){
+    //&i
+    static private XSSFFont failFont(XSSFWorkbook wb){
         // Create a new font and alter it.
         XSSFFont font = wb.createFont();
         font.setFontHeightInPoints((short)14);
@@ -165,7 +169,7 @@ public class Excel {
         font.setColor(new XSSFColor(new java.awt.Color(255, 0, 0)));
         return font;
     }
-    
+    //&i
     private XSSFCellStyle style1 (XSSFWorkbook wb){
         // Create a new font and alter it.
         XSSFCellStyle style = wb.createCellStyle();
@@ -183,7 +187,7 @@ public class Excel {
         style.setTopBorderColor(new XSSFColor(new java.awt.Color(217, 217, 217)));
         return style;
     }
-    
+    //&i
     private XSSFCellStyle style2 (XSSFWorkbook wb){
         // Create a new font and alter it.
         XSSFCellStyle style = wb.createCellStyle();
@@ -199,7 +203,7 @@ public class Excel {
         style.setTopBorderColor(new XSSFColor(new java.awt.Color(217, 217, 217)));
         return style;
     }
-    
+    //&i
     static private XSSFCellStyle style3 (XSSFWorkbook wb){
         // Create a new font and alter it.
         XSSFCellStyle style = wb.createCellStyle();
@@ -215,7 +219,7 @@ public class Excel {
         style.setTopBorderColor(new XSSFColor(new java.awt.Color(217, 217, 217)));
         return style;
     }
-    
+    //&i
     private void promVertical(int iSize){
         double dSuma;
         for (int i = 0; i < 12; i++) {
@@ -227,7 +231,7 @@ public class Excel {
         }
         
     }
-    
+    //&i
     private void promHorizontal(int iSize){
         double dSuma;
         for (int i = 0; i < iSize; i++) {

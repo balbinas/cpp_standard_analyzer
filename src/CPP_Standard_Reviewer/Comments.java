@@ -23,7 +23,7 @@ public class Comments {
     Comments() {
         sFunctionName = "";
         sFileName = "";
-        sComments = "Comentarios: ";
+        sComments = "Comments: ";
         iInitialComments = new int [2];
         iComments = new int [2];
         iParameters = new int [2];
@@ -41,9 +41,9 @@ public class Comments {
         int iGrade[] = new int [2];
         String sAux[] = split(sName, '.');
         int iPos;
-        System.out.println(sFileName + " " + sName);
+        System.out.println(sFileName + " " + sName.toLowerCase());
         if (sFileName.indexOf(".") > -1) {
-            iPos = (split(sFileName, '.')[0].equals(sAux[0]))? 0 : 1;
+            iPos = (split(sFileName, '.')[0].equals(sAux[0].toLowerCase()))? 0 : 1;
             iGrade[iPos]++;
         } else {
             if(sFileName.equals(sAux[0])) {
@@ -69,7 +69,7 @@ public class Comments {
     //&i
     public boolean endOfComment(String sLine) {
         sLine = sLine.trim();
-        return (sLine.equals("*/"));
+        return (sLine.equals("*/") || sLine.contains("*/"));
     }
     //&i
     public boolean startParameters(String sLine) {
@@ -164,6 +164,32 @@ public class Comments {
         }
         iConts[2] = iConts[0] + iConts[1];
         return iConts;
+    }
+    //&i
+    public void checkLineComments(String sLine) {
+        sLine = sLine.trim();
+        int iStart = sLine.indexOf("//");
+        if(iStart > -1) {
+            if(sLine.substring(iStart + 2).trim().length() > 0) {
+                iComments[0]++;
+                if(sLine.substring(iStart + 2).trim().split(" ").length > 1) 
+                    iComments[0]++;
+                else
+                    iComments[1]++;
+            }
+            else {
+                iComments[1] += 2;
+            }
+        }
+    }
+    //&i
+    public int[] getLineCommentsGrade() {
+        return iComments;
+    }
+    
+    //&i
+    public String getComments() {
+        return sComments;
     }
     //&i
     private String [] split(String sLine, char sChar) {

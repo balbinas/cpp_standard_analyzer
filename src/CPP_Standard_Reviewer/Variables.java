@@ -16,10 +16,11 @@ public class Variables {
     ArrayList<String> sArrVars = new ArrayList<>();
     ArrayList<String> sArrTypes = new ArrayList<>();
     String [] sVariables ={"bool", "int", "float", "string", "char", "double"};
-    String sType;
+    String sType, sComments;
     //&i
     public Variables() {
         sType = "";
+        sComments = "Variables: ";
     }
     //&i
     public Boolean isADeclaration(String sLine){

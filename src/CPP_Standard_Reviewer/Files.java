@@ -18,14 +18,15 @@ import java.util.ArrayList;
  *
  * @author Faintinger
  */
+//&p-Files
 public class Files {
     ArrayList<String> sArrLines = new ArrayList<String>();
     String sName;
-    
+    //&i
     public Files() {
         sName = "";
     }
-    
+    //&i
     public Boolean openFile(String sName) {
         //File fFile = new File(sName);
         String line;
@@ -42,7 +43,7 @@ public class Files {
         }
         return true;
     }
-    
+    //&i
     public void removeBlankLines() {
         ArrayList<String> sArrAux = new ArrayList<String>();
             for (int i = 0; i < sArrLines.size(); i++) { 
@@ -58,15 +59,15 @@ public class Files {
             }
             sArrLines = sArrAux;
     }
-    
+    //&i
     public String getLine(int iPos) {
         return sArrLines.get(iPos);
     }
-    
+    //&i
     public int length() {
         return sArrLines.size();
     }
-    
+    //&i
     public String getName(){
         return sName;
     }
