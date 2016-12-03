@@ -17,10 +17,16 @@ public class Variables {
     ArrayList<String> sArrTypes = new ArrayList<>();
     String [] sVariables ={"bool", "int", "float", "string", "char", "double"};
     String sType, sComments;
+    int iGradVariables [];
+    int iGradFunct [];
+    int iGradFunctVar [];
     //&i
     public Variables() {
         sType = "";
         sComments = "Variables: ";
+        iGradVariables = new int [2];
+        iGradFunct = new int [2];
+        iGradFunctVar  = new int [2];
     }
     //&i
     public Boolean isADeclaration(String sLine){
@@ -84,6 +90,7 @@ public class Variables {
             }
             iConts[2] = iConts[0] + iConts[1];
         }
+        iGradVariables[0] += iConts[0]; iGradVariables[1] += iConts[1];
         return iConts;
     }
     //&i
@@ -105,10 +112,12 @@ public class Variables {
             iCont[1]++;
         } 
         System.out.println(iCont[0] + " " + iCont[1]);
+        iGradFunct[0] += iCont[0]; iGradFunct[1] += iCont[1];
         return iCont;
     }
     //&i
     public int[] checkDeclarationsOfFunctions(String sLine) {
+        sLine = sLine.trim();
         int iConts[] = new int [3];
         sLine = sLine.substring(sLine.indexOf("(")+1);
         String sArr [] = split(sLine, ' ');
@@ -134,6 +143,7 @@ public class Variables {
             }               
             iConts[2] = iConts[0] + iConts[1];
         }
+        iGradFunctVar[0] += iConts[0]; iGradFunctVar[1] += iConts[1];
         return iConts;
     }
     //&i
@@ -149,7 +159,6 @@ public class Variables {
     private String [] deleteChar(String sAux[], String sCad) {
         String sRet[] = new String [sAux.length];
         for (int i = 0; i < sAux.length; i++) {
-            //System.out.println(sAux[i]);
             sRet[i] = (sAux[i].indexOf(sCad) > -1)? sAux[i].replace(sCad, "") : sAux[i];
         }
         return sRet;
@@ -182,6 +191,7 @@ public class Variables {
     private String [] multipleSplit(String sArr[], char sChar) {
         ArrayList<String> sList = new ArrayList<String>();
         for(int i = 0; i < sArr.length; i++) {
+            //System.out.println(sArr[i] + sArr.length + sArr[i].length()+ "i:" + i);
             String sAux [] = split(sArr[i], sChar);
             for(int j = 0; j < sAux.length; j++) {
                 if(!sAux[j].trim().equals(""))
@@ -201,5 +211,20 @@ public class Variables {
             }
         }
         return false;
+    }
+    private void loadComments() {
+        if(iGradFunctVar[1] > 0) {
+            sComments += "Variables in functions declared without standard, ";
+        }
+        if(iGradFunct[1] > 0) {
+            sComments += "Functions declared without standard, ";
+        }
+        if(iGradVariables[1] > 0) {
+            sComments += "Variables declared without standard, ";
+        }
+    }
+    //&i
+    public String getComments() {
+        return sComments;
     }
 }

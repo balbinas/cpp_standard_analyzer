@@ -203,6 +203,11 @@ public class Report {
                         }
                     }
                     sLine = fArr.getLine(++i);
+                    if(comComments.isAComment(sLine.trim())) {
+                        while(!comComments.endOfComment(sLine.trim()))
+                            sLine = fArr.getLine(++i);
+                        sLine = fArr.getLine(++i);
+                    }
                     int iIndex = (comComments.checkFunctionName(sLine))? 0 : 1;
                     //System.out.println("Index: " + iIndex);
                     int iArrCom[] = comComments.checkDeclarationsOfFunctions(sLine);
@@ -262,7 +267,7 @@ public class Report {
             iOneLineComments = comComments.getLineCommentsGrade();
             iIndentation = forFormat.getEvalIdentation();
             sComments[iPos] = comComments.getComments() + libLibraries.getComments() + 
-                    forFormat.getComments();
+                    forFormat.getComments() + vVars.getComments();
             //System.out.println(libLibraries.getComments());
             return true;
         } 
