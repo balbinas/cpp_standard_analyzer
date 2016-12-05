@@ -108,7 +108,9 @@ public class Report {
                 fAux.openFile(fList.get(i).getPath());
                 fAux.removeBlankLines();
                 if(fAux.length() > 0) {
-                    calculateFile(i);
+                    try {
+                        calculateFile(i);
+                    } catch (Exception ex) { }
                 iReportCriterias[i][0] = iGradCrit[0] * ((iFileName[0] * 1.0) 
                         / (iFileName[0] + iFileName[1]));
                 iReportCriterias[i][1] = iGradCrit[1] * ((iVars[0] * 1.0)/(iVars[0] + iVars[1]));
